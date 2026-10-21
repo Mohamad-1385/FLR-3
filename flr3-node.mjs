@@ -565,14 +565,21 @@ async function handleVless(ws) {
 }
 
 // ═════════════ ورودی HTTP + WS ═════════════
+// P871: CORS برای داشبورد فلش‌کلاد (خواندن /health و /stats از مرورگر)
 function textBody(req, res, code, body, type = "text/plain; charset=utf-8") {
-  res.writeHead(code, { "content-type": type, "cache-control": "no-store" });
+  res.writeHead(code, {
+    "content-type": type, "cache-control": "no-store",
+    "access-control-allow-origin": "*",
+    "access-control-allow-methods": "GET, OPTIONS",
+    "access-control-allow-headers": "content-type",
+  });
   res.end(body);
 }
 
 async function handleRequest(req, res) {
   const url = new URL(req.url, "http://x");
   try {
+    if (req.method === "OPTIONS") return textBody(req, res, 204, "");
     if (url.pathname === "/health") return textBody(req, res, 200, "FLR-3 ok");
     if (url.pathname === "/ping") return textBody(req, res, 200, "pong");
     if (url.pathname === "/stats") {
