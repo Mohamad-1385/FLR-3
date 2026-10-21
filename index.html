@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#07070b">
+<meta name="referrer" content="no-referrer">
+<title>فلش‌کلاد — شبکهٔ تحویل خودی فلش</title>
+<style>
+  :root{
+    --bg:#07070b; --card:#0f0f17; --card2:#13131d; --line:#1e1e2c; --line2:#2a2a3d;
+    --tx:#eceaf4; --dim:#8f8fa6; --dim2:#5f5f76;
+    --amber:#f5b942; --amber2:#ffcf6b; --green:#2fd48a; --red:#ff5d6c; --blue:#5aa2ff;
+    --cf:#ff8a3d; --sv:#2fd48a; --vp:#5aa2ff;
+    --r:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--tx); min-height:100vh;
+    font-family:"Vazirmatn","Vazir",-"Segoe UI",Tahoma,"Iranian Sans",sans-serif;
+    font-size:15px; line-height:1.85;
+    background-image:radial-gradient(1100px 480px at 85% -8%, rgba(245,185,66,.075), transparent 60%),
+                     radial-gradient(900px 420px at 8% 12%, rgba(90,162,255,.05), transparent 55%);
+  }
+  .wrap{max-width:940px;margin:0 auto;padding:20px 16px 64px}
+  a{color:var(--blue);text-decoration:none}
+
+  /* ─── هدر ─── */
+  header{display:flex;align-items:center;gap:14px;padding:14px 4px 20px}
+  .logo{width:52px;height:52px;border-radius:16px;flex:none;
+    background:linear-gradient(135deg,#f5b942,#e0862a);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 26px rgba(245,185,66,.28)}
+  .logo svg{width:30px;height:30px}
+  .htxt h1{font-size:21px;font-weight:800;letter-spacing:.2px}
+  .htxt p{color:var(--dim);font-size:12.5px;margin-top:-2px}
+  .hclock{margin-inline-start:auto;text-align:left;color:var(--dim2);font-size:11.5px;line-height:1.7;flex:none}
+  .hclock b{color:var(--dim);font-weight:600;font-variant-numeric:tabular-nums}
+
+  /* ─── کارت پایه ─── */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    padding:20px;margin-bottom:18px}
+  .card h2{font-size:16.5px;font-weight:800;display:flex;align-items:center;gap:9px;margin-bottom:4px}
+  .card h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--amber);flex:none;box-shadow:0 0 10px var(--amber)}
+  .card .sub{color:var(--dim);font-size:12.5px;margin-bottom:14px}
+
+  /* ─── دکمه‌ها ─── */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    border-radius:12px;padding:12px 18px;font-family:inherit;font-size:14px;font-weight:700;
+    border:1px solid var(--line2);background:var(--card2);color:var(--tx);cursor:pointer;
+    transition:transform .06s, filter .15s; text-decoration:none; user-select:none}
+  .btn:active{transform:scale(.97)}
+  .btn:hover{filter:brightness(1.12)}
+  .btn.primary{background:linear-gradient(135deg,#f5b942,#e0862a);color:#221503;border:none;
+    box-shadow:0 5px 22px rgba(245,185,66,.25);font-size:15.5px;padding:14px 22px}
+  .btn.green{background:linear-gradient(135deg,#2fd48a,#1fa06b);color:#03261a;border:none}
+  .btn.blue{background:linear-gradient(135deg,#5aa2ff,#2f6fe0);color:#04162e;border:none}
+  .btn.ghost{background:transparent}
+  .btn.sm{padding:7px 13px;font-size:12.5px;border-radius:9px}
+  .btn.block{width:100%}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row .btn{flex:1;min-width:140px}
+
+  /* ─── دانلود اپ ─── */
+  .dlbig{background:linear-gradient(160deg,#14131c,#0d0d14);border:1px solid #2b2415;
+    border-radius:18px;padding:26px 22px;margin-bottom:18px;position:relative;overflow:hidden}
+  .dlbig::after{content:"";position:absolute;inset-inline-start:-70px;top:-70px;width:220px;height:220px;
+    border-radius:50%;background:radial-gradient(circle,rgba(245,185,66,.16),transparent 70%)}
+  .ver{display:inline-flex;align-items:center;gap:7px;background:rgba(245,185,66,.13);color:var(--amber2);
+    border:1px solid rgba(245,185,66,.35);border-radius:99px;padding:3px 13px;font-size:12px;font-weight:700;margin-bottom:10px}
+  .dlbig h2{font-size:20px;font-weight:800;margin-bottom:6px}
+  .dlbig .sub{color:var(--dim);font-size:13px;margin-bottom:18px}
+  .sha{display:flex;align-items:center;gap:8px;color:var(--dim2);font-size:11px;margin-top:14px;
+    font-family:ui-monospace,monospace;direction:ltr;justify-content:flex-end;flex-wrap:wrap}
+  .sha button{background:none;border:1px solid var(--line2);color:var(--dim);border-radius:7px;
+    padding:2px 9px;font-size:10.5px;cursor:pointer;font-family:inherit}
+
+  /* ─── ناوگان ─── */
+  .fleetsum{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .pill{display:inline-flex;align-items:center;gap:7px;border-radius:99px;padding:4px 14px;
+    font-size:12.5px;font-weight:700;border:1px solid}
+  .pill.ok{color:var(--green);border-color:rgba(47,212,138,.4);background:rgba(47,212,138,.08)}
+  .pill.bad{color:var(--red);border-color:rgba(255,93,108,.4);background:rgba(255,93,108,.08)}
+  .pill.wait{color:var(--amber2);border-color:rgba(245,185,66,.4);background:rgba(245,185,66,.08)}
+  .entry{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:15px 16px;margin-bottom:11px}
+  .entry .top{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .ehost{font-family:ui-monospace,monospace;font-size:13px;direction:ltr;font-weight:600}
+  .badge{font-size:10.5px;font-weight:800;border-radius:7px;padding:2px 9px;flex:none}
+  .badge.cf{color:var(--cf);background:rgba(255,138,61,.1);border:1px solid rgba(255,138,61,.3)}
+  .badge.sv{color:var(--sv);background:rgba(47,212,138,.1);border:1px solid rgba(47,212,138,.3)}
+  .badge.vp{color:var(--vp);background:rgba(90,162,255,.1);border:1px solid rgba(90,162,255,.3)}
+  .badge.pr{color:var(--dim);background:var(--card);border:1px solid var(--line2)}
+  .entry .stat{margin-top:9px;font-size:12.5px;color:var(--dim);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .st-ok{color:var(--green);font-weight:700}
+  .st-bad{color:var(--red);font-weight:700}
+  .st-run{color:var(--amber2)}
+  .ms{font-variant-numeric:tabular-nums;font-family:ui-monospace,monospace}
+  .entry .extra{margin-top:8px;padding-top:9px;border-top:1px dashed var(--line);
+    font-size:12.5px;color:var(--dim);display:none}
+  .entry .extra.show{display:block}
+  .kv{display:inline-flex;gap:6px;align-items:center;margin-inline-end:16px}
+  .kv b{color:var(--tx);font-weight:600;font-family:ui-monospace,monospace;direction:ltr}
+
+  /* ─── منابع و خروجی‌ها ─── */
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:11px}
+  .mini{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .mini .t{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
+  .mini .d{color:var(--dim);font-size:11.5px;margin-top:3px}
+  .led{width:9px;height:9px;border-radius:50%;flex:none;background:var(--dim2)}
+  .led.ok{background:var(--green);box-shadow:0 0 9px var(--green)}
+  .led.bad{background:var(--red);box-shadow:0 0 9px var(--red)}
+  .led.run{background:var(--amber);box-shadow:0 0 9px var(--amber)}
+  .cc{font-family:ui-monospace,monospace;font-size:10.5px;font-weight:800;border-radius:6px;
+    padding:1px 8px;color:var(--tx);background:var(--card);border:1px solid var(--line2)}
+
+  /* ─── فرم افزودن ─── */
+  .inrow{display:flex;gap:9px;flex-wrap:wrap}
+  input[type=text]{flex:1;min-width:230px;background:#0a0a12;border:1px solid var(--line2);border-radius:11px;
+    padding:12px 15px;color:var(--tx);font-family:ui-monospace,monospace;font-size:13.5px;direction:ltr;text-align:left}
+  input[type=text]:focus{outline:none;border-color:var(--amber)}
+  .result{border-radius:12px;padding:14px 16px;font-size:13.5px;margin-top:13px;display:none;line-height:2}
+  .result.show{display:block}
+  .result.ok{background:rgba(47,212,138,.07);border:1px solid rgba(47,212,138,.35)}
+  .result.bad{background:rgba(255,93,108,.07);border:1px solid rgba(255,93,108,.35)}
+  .result .msgbox{background:#0a0a12;border:1px solid var(--line2);border-radius:10px;padding:11px 14px;
+    margin:10px 0;font-size:12.5px;direction:ltr;text-align:left;font-family:inherit;word-break:break-word}
+
+  /* ─── راهنما ─── */
+  .step{display:flex;gap:15px;margin-bottom:6px}
+  .snum{width:34px;height:34px;border-radius:11px;flex:none;font-size:16px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;background:rgba(245,185,66,.13);
+    color:var(--amber2);border:1px solid rgba(245,185,66,.35)}
+  .sbody{flex:1;padding-bottom:20px;border-bottom:1px dashed var(--line)}
+  .step:last-child .sbody{border-bottom:none;padding-bottom:4px}
+  .sbody h3{font-size:15px;font-weight:800;margin-bottom:6px}
+  .sbody p{color:var(--dim);font-size:13px}
+  .sbody p b{color:var(--tx)}
+  .sbody ul{margin:7px 18px 4px 0;color:var(--dim);font-size:13px}
+  .sbody li{margin-bottom:4px}
+  .code{display:flex;align-items:center;gap:9px;background:#05050a;border:1px solid var(--line2);
+    border-radius:10px;padding:11px 13px;margin:10px 0;direction:ltr;text-align:left}
+  .code code{flex:1;font-family:ui-monospace,monospace;font-size:11.8px;color:#c9e3a8;word-break:break-all;line-height:1.7}
+  .code button{flex:none;background:var(--card2);border:1px solid var(--line2);color:var(--dim);
+    border-radius:8px;padding:5px 12px;font-size:11px;cursor:pointer;font-family:inherit}
+  .en{font-family:ui-monospace,monospace;font-size:12px;background:var(--card2);
+    border:1px solid var(--line2);border-radius:6px;padding:1px 8px;direction:ltr;display:inline-block}
+  .plana{background:linear-gradient(160deg,rgba(47,212,138,.09),rgba(13,13,20,0));border:1px solid rgba(47,212,138,.4);
+    border-radius:14px;padding:20px;margin:16px 0 20px}
+  .plana h3{font-size:16px;font-weight:800;color:var(--green);margin-bottom:8px}
+  .plana p{color:var(--dim);font-size:13px}
+  .plana ul{margin:9px 18px 12px 0;color:var(--dim);font-size:13px}
+  .warn{background:rgba(255,93,108,.07);border:1px solid rgba(255,93,108,.3);border-radius:12px;
+    padding:13px 16px;font-size:12.5px;color:var(--dim);margin-top:12px}
+  .note{background:rgba(90,162,255,.07);border:1px solid rgba(90,162,255,.3);border-radius:12px;
+    padding:13px 16px;font-size:12.5px;color:var(--dim);margin-top:12px}
+
+  footer{text-align:center;color:var(--dim2);font-size:11.5px;margin-top:34px;line-height:2.2}
+  footer b{color:var(--dim)}
+  .spacer{height:8px}
+  @media(max-width:640px){
+    .hclock{display:none}
+    .row .btn{min-width:100%}
+    .entry .top{gap:6px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M13 2 4.5 13.5H11L9.5 22 19 9.5h-6.5L13 2Z" fill="#221503"/></svg>
+    </div>
+    <div class="htxt">
+      <h1>فلش‌کلاد</h1>
+      <p>شبکهٔ تحویل خودی فلش — مستقل از کلادفلر</p>
+    </div>
+    <div class="hclock">
+      <div>ساعت تهران</div>
+      <b id="clock">--:--:--</b>
+    </div>
+  </header>
+
+  <!-- ═══════════ دانلود اپ ═══════════ -->
+  <div class="dlbig">
+    <div class="ver">● جدیدترین نسخه — v1.29.50</div>
+    <h2>دانلود اپ فلش</h2>
+    <div class="sub">مسیر خودی فلش (FLR-3) — موتور SMF-CORE v4.1 · خروجی GB/US · بدون وارپ، بدون رلهٔ اجاره‌ای</div>
+    <div class="row">
+      <a class="btn primary" id="dlMain" href="https://github.com/Mohamad-1385/FlashNG/releases/download/fng-v1.29.50/FlashNG-v1.29.50.apk">
+        دانلود مستقیم — همهٔ گوشی‌ها (arm64)
+      </a>
+      <a class="btn" href="https://github.com/Mohamad-1385/FlashNG/releases/download/fng-v1.29.50/FlashNG-v1.29.50-x86.apk">
+        نسخهٔ x86
+      </a>
+      <a class="btn" href="https://crimson-atlas-9567.nasabaghili.workers.dev/dl/61e946bd4054515f/FlashNG-v1.29.50.apk">
+        لینک جایگزین
+      </a>
+      <a class="btn ghost" href="https://github.com/Mohamad-1385/FlashNG/releases/tag/fng-v1.29.50">
+        صفحهٔ تغییرات
+      </a>
+    </div>
+    <div class="sha">
+      <span>sha256:</span><span id="shaTxt">069b9a88898033dd…e23db8107</span>
+      <button onclick="copyTxt('069b9a88898033ddeee0a01ae4942be054127911d1f4846702c4e6be23db8107',this)">کپی کامل</button>
+    </div>
+  </div>
+
+  <!-- ═══════════ ناوگان رله ═══════════ -->
+  <div class="card">
+    <h2><span class="dot"></span>ناوگان رله — تست زنده از همین مرورگر</h2>
+    <div class="sub">این تست‌ها مستقیم از شبکهٔ خودِ شما اجرا می‌شوند — یعنی دقیقاً همان مسیری که اپ فلش می‌رود. اگر اینجا سبز باشد، روی گوشی هم سبز است.</div>
+    <div class="fleetsum">
+      <span class="pill wait" id="fleetPill">در حال بارگذاری…</span>
+      <span style="color:var(--dim2);font-size:11.5px" id="bootSrc"></span>
+      <button class="btn sm" style="margin-inline-start:auto" onclick="testAll()">تست دوبارهٔ همه</button>
+    </div>
+    <div id="fleet"></div>
+  </div>
+
+  <!-- ═══════════ منابع بوت‌استرپ ═══════════ -->
+  <div class="card">
+    <h2><span class="dot" style="background:var(--blue);box-shadow:0 0 10px var(--blue)"></span>منابع بوت‌استرپ (حلقهٔ کنترل)</h2>
+    <div class="sub">اپ فلش فهرست رله‌ها را از این منابع می‌گیرد — همه روی گیت‌هاب، بیرون از دسترس کلادفلر. بن کلادفلر دیگر هیچ تاثیری روی اپ ندارد.</div>
+    <div class="grid2" id="bootsrc"></div>
+    <div class="note">اگر روزی همهٔ رله‌های فعلی بمیرند، فقط یک فایل <span class="en">bootstrap.json</span> در همین صفحه عوض می‌شود و همهٔ اپ‌ها ظرف ۱۰ دقیقه خودکار به سرور نو وصل می‌شوند — بدون نصب دوباره.</div>
+  </div>
+
+  <!-- ═══════════ نردبان خروجی ═══════════ -->
+  <div class="card">
+    <h2><span class="dot" style="background:var(--green);box-shadow:0 0 10px var(--green)"></span>نردبان خروجی</h2>
+    <div class="sub">ترافیک سایت‌های کلادفلری (اکثریت وب + سایت‌های چک IP) از دل رلهٔ انگلیس خارج می‌شود؛ سپس آمریکا، آلمان، فرانسه. گوگل/تلگرام/جمینای مستقیم از خود سرور رله (اروپا) — هرگز ایران.</div>
+    <div class="grid2" id="exits"></div>
+  </div>
+
+  <!-- ═══════════ افزودن رله ═══════════ -->
+  <div class="card" id="add">
+    <h2><span class="dot" style="background:var(--green);box-shadow:0 0 10px var(--green)"></span>افزودن رلهٔ نو (serv00)</h2>
+    <div class="sub">سرورت را نصب کردی؟ نشانی‌اش را اینجا بگذار تا از همین‌جا تست شود و پیامِ آمادهٔ ثبت برایم ساخته شود.</div>
+    <div class="inrow">
+      <input type="text" id="newUrl" placeholder="https://username.serv00.net" spellcheck="false" autocomplete="off">
+      <button class="btn green" onclick="testNew()">تست و آماده‌سازی ثبت</button>
+    </div>
+    <div class="result" id="newResult"></div>
+  </div>
+
+  <!-- ═══════════ راهنمای serv00 ═══════════ -->
+  <div class="card" id="guide">
+    <h2><span class="dot" style="background:var(--cf);box-shadow:0 0 10px var(--cf)"></span>نصب سرور خودت — لحظه به لحظه</h2>
+    <div class="sub">سرور رایگان serv00 (لهستان · اتحادیهٔ اروپا · بدون کارت بانکی · ترافیک نامحدود) — ۶ گام، فقط یک‌بار برای همیشه.</div>
+
+    <div class="plana">
+      <h3>راه راحت‌تر: اصلاً دست نزن، خودم می‌زنم</h3>
+      <p>اگر گام‌های ۴ و ۵ برات سنگین بود، فقط <b>گام ۱ (ثبت‌نام)</b> را خودت بزن — بقیه‌اش کار من است. بعد از رسیدن ایمیل تأیید، این سه چیز را برایم بفرست:</p>
+      <ul>
+        <li>نشانی سرور — مثل <span class="en">s9.serv00.com</span> (داخل ایمیلِ تأیید نوشته)</li>
+        <li>یوزرنیم</li>
+        <li>پسورد</li>
+      </ul>
+      <p>من از همین‌جا SSH می‌زنم، رله را نصب، راه‌اندازی و تست می‌کنم و فقط نتیجهٔ نهایی را تحویل می‌دهم. بعد از تحویل می‌توانی پسورد را از پنل عوض کنی.</p>
+      <div class="row" style="margin-top:12px">
+        <a class="btn green" href="https://t.me/Mohamadaghilibot?text=%D8%B3%D8%B1%D9%88%D8%B1%20serv00%20%D8%A2%D9%85%D8%A7%D8%AF%D9%87%E2%80%8C%D8%B3%D8%AA%3A%20%D9%86%D8%B4%D8%A7%D9%86%DB%8C%20%D8%B3%D8%B1%D9%88%D8%B1%3A%20%C2%B7%20%DB%8C%D9%88%D8%B2%D8%B1%D9%86%DB%8C%D9%85%3A%20%C2%B7%20%D9%BE%D8%B3%D9%88%D8%B1%D8%AF%3A" target="_blank">فرستادن مشخصات به ربات فلش</a>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="snum">۱</div>
+      <div class="sbody">
+        <h3>ثبت‌نام (۵ دقیقه — فقط همین قسمت دست خودت)</h3>
+        <p>در مرورگر برو به <a href="https://serv00.com/register-account" target="_blank" rel="noopener">serv00.com/register-account</a> و فرم را پر کن:</p>
+        <ul>
+          <li><b>Username</b> — یک نام انگلیسی، مثل <span class="en">mohamadfl</span> (این می‌شود نشانی سرورت)</li>
+          <li><b>Email</b> — ایمیل خودت؛ تأیید به همین می‌آید (پوشهٔ Spam را هم ببین)</li>
+          <li><b>Password</b> — پسورد قوی؛ یادت بماند، بعداً لازم است</li>
+        </ul>
+        <p>اگر صفحهٔ انتخاب سرور آمد (مثل <span class="en">s0</span> تا <span class="en">s14</span>) هر کدام را بزن — همه در اروپا هستند. سپس دکمهٔ Create را بزن.</p>
+        <p><b>صبر:</b> تأیید دستی است — از چند ساعت تا ۷۲ ساعت. وقتی ایمیل «Your serv00 account is ready» آمد، برو گام بعد.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="snum">۲</div>
+      <div class="sbody">
+        <h3>ورود به پنل</h3>
+        <p>برو به <a href="https://panel.serv00.com" target="_blank" rel="noopener">panel.serv00.com</a> (یا نشانی‌ای که در ایمیل آمده، مثل <span class="en">panel9.serv00.com</span>) و با همان یوزرنیم و پسوردِ ثبت‌نام وارد شو.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="snum">۳</div>
+      <div class="sbody">
+        <h3>ساخت سایت Node.js</h3>
+        <ul>
+          <li>در منوی پنل روی <span class="en">WWW Websites</span> بزن</li>
+          <li>روی <span class="en">+ Add new website</span> بزن</li>
+          <li>روی <span class="en">Advanced settings</span> بزن تا نوع سایت‌ها باز شود</li>
+          <li>در <span class="en">Domain</span> بنویس: <span class="en">username.serv00.net</span> (به‌جای username همان یوزرنیمت)</li>
+          <li><span class="en">Type</span> را روی <span class="en">Node.js</span> بگذار و در <span class="en">Node.js binary</span> جدیدترین نسخه (مثلاً <span class="en">node20</span>) را انتخاب کن</li>
+          <li>دکمهٔ <span class="en">Add</span> را بزن</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="snum">۴</div>
+      <div class="sbody">
+        <h3>گواهی رایگان TLS (بعد از ۱۰ دقیقه صبر)</h3>
+        <p>تازه‌ساخته‌شدن دامنه در DNS چند دقیقه طول می‌کشد؛ بعد:</p>
+        <ul>
+          <li>در <span class="en">WWW Websites</span> روی دامنهٔ خودت بزن</li>
+          <li>روی <span class="en">SSL</span> برو → <span class="en">Manage certificates</span></li>
+          <li>روی <span class="en">New certificate</span> بزن → نوع <span class="en">Let's Encrypt</span> → بساز</li>
+          <li>چند ثانیه صبر کن تا وضعیت <span class="en">Active</span> شود — همین! قفل سبز داری</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="snum">۵</div>
+      <div class="sbody">
+        <h3>نصب رلهٔ فلش — فقط یک خط</h3>
+        <p>روی گوشی اپ <b>Termius</b> را از گوگل‌پلی نصب کن (رایگان) → <span class="en">Hosts</span> → <span class="en">+</span> → در <span class="en">Hostname</span> نشانی سرور (<span class="en">s9.serv00.com</span>) و یوزرنیم و پسورد را بزن → <span class="en">Connect</span>. حالا این یک خط را در ترمینال پیست کن و Enter بزن:</p>
+        <div class="code">
+          <code id="setupLine">sh -c "$(fetch -q -o - https://raw.githubusercontent.com/Mohamad-1385/FLR-3/main/serv00-setup.sh)" _ username.serv00.net</code>
+          <button onclick="copyTxt(document.getElementById('setupLine').textContent,this)">کپی</button>
+        </div>
+        <p>به‌جای <span class="en">username.serv00.net</span> دامنهٔ خودت را بگذار. اسکریپت خودش: رله را دانلود و نصب می‌کند، سایت را ری‌استارت می‌کند، نگهدارندهٔ همیشگی (هر ۵ دقیقه) را می‌سازد و در آخر سلامت را تست می‌کند. باید ببینی: <span class="en">FLR-3 ok</span></p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="snum">۶</div>
+      <div class="sbody">
+        <h3>ثبت در شبکهٔ فلش (آخرین گام!)</h3>
+        <p>نشانی <span class="en">https://username.serv00.net</span> را در فرم «افزودن رلهٔ نو» همین صفحه تست کن و پیام آماده را برایم بفرست — یا مستقیم به ربات بفرست.</p>
+        <p>به محض ثبت، <b>همهٔ اپ‌های فلش</b> (بدون نصب دوباره) ظرف ۱۰ دقیقه به‌جای ورکر کلادفلر به <b>سرور خودِ تو</b> وصل می‌شوند و کلادفلر فقط نقش یادیگ/فالبک را پیدا می‌کند.</p>
+      </div>
+    </div>
+
+    <div class="warn"><b>اگر serv00 ثبت‌نامت را قبول نکرد:</b> نگران نباش — خبرم کن؛ گزینه‌های جایگزین (woiden و…) آمادهٔ پیاده‌سازی است. مسیر اپ حتی بدون سرور شخصی هم با ورکرهای فعلی زنده می‌ماند.</div>
+  </div>
+
+  <footer>
+    <b>فلش‌کلاد</b> · راند P871 · میزبانی: GitHub Pages (صفر کلادفلر)
+    <br>
+    سورس رله: <a href="https://github.com/Mohamad-1385/FLR-3" target="_blank" rel="noopener">github.com/Mohamad-1385/FLR-3</a>
+    · اپ: <a href="https://github.com/Mohamad-1385/FlashNG/releases" target="_blank" rel="noopener">FlashNG</a>
+  </footer>
+</div>
+<script>
+"use strict";
+/* ═══════════ فلش‌کلاد — موتور تست زنده (P871) ═══════════
+   کلاینت SMF داخل مرورگر: همان قرارداد سیمی موتور اپ
+   (هندشیک "SFM"+ver+flags+rand · فریم sid/flags/len · OPEN/DATA/CLOSE) */
+
+const $ = (id) => document.getElementById(id);
+const BOOT_URLS = [
+  { name: "jsdelivr", url: "https://cdn.jsdelivr.net/gh/Mohamad-1385/FLR-3@main/bootstrap.json" },
+  { name: "raw.githubusercontent", url: "https://raw.githubusercontent.com/Mohamad-1385/FLR-3/main/bootstrap.json" },
+  { name: "github-pages", url: "./bootstrap.json" },
+];
+const SMF_PATH = "/s2-c7a4df682646";
+const F_DATA = 0x01, F_OPEN = 0x02, F_CLOSE = 0x04;
+let BOOT = null;
+
+/* ─── ابزارها ─── */
+function copyTxt(t, btn) {
+  const done = () => { const old = btn.textContent; btn.textContent = "کپی شد"; setTimeout(() => btn.textContent = old, 1400); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, done);
+  else { const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (e) {} document.body.removeChild(ta); done(); }
+}
+function relTime(ts) {
+  const d = Date.now() - ts;
+  if (d < 60e3) return "همین حالا";
+  if (d < 3600e3) return Math.floor(d / 60e3) + " دقیقه پیش";
+  if (d < 86400e3) return Math.floor(d / 3600e3) + " ساعت پیش";
+  return Math.floor(d / 86400e3) + " روز پیش";
+}
+async function fetchTimeout(url, ms) {
+  const c = new AbortController();
+  const t = setTimeout(() => c.abort(), ms);
+  try { const r = await fetch(url, { signal: c.signal, cache: "no-store" }); clearTimeout(t); return r; }
+  catch (e) { clearTimeout(t); throw e; }
+}
+
+/* ─── ساعت تهران ─── */
+const fmt = new Intl.DateTimeFormat("fa-IR", { timeZone: "Asia/Tehran", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+setInterval(() => { $("clock").textContent = fmt.format(new Date()); }, 1000);
+$("clock").textContent = fmt.format(new Date());
+
+/* ═══ پروتکل SMF ═══ */
+function smfFrame(sid, flags, payload) {
+  const u = new Uint8Array(5 + payload.length);
+  u[0] = (sid >> 8) & 255; u[1] = sid & 255; u[2] = flags;
+  u[3] = (payload.length >> 8) & 255; u[4] = payload.length & 255;
+  u.set(payload, 5);
+  return u;
+}
+function dnsQueryBytes(name, id) {
+  const labels = name.split(".").filter(Boolean);
+  let qn = 1; for (const l of labels) qn += 1 + l.length;
+  const buf = new Uint8Array(12 + qn + 4);
+  const dv = new DataView(buf.buffer);
+  dv.setUint16(0, id & 65535); dv.setUint16(2, 0x0100); dv.setUint16(4, 1);
+  let o = 12;
+  for (const l of labels) { buf[o++] = l.length; for (let i = 0; i < l.length; i++) buf[o++] = l.charCodeAt(i); }
+  buf[o++] = 0;
+  dv.setUint16(o, 1); dv.setUint16(o + 2, 1);
+  return buf;
+}
+function dnsParseA(buf, id) {
+  if (buf.length < 12) return null;
+  const dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+  if (dv.getUint16(0) !== (id & 65535) || !(dv.getUint16(2) & 0x8000)) return null;
+  const an = dv.getUint16(6);
+  if (!an) return null;
+  let o = 12;
+  while (buf[o] !== 0) { o += 1 + buf[o]; if (o > buf.length - 5) return null; }
+  o += 1 + 4;
+  for (let i = 0; i < an && o < buf.length - 12; i++) {
+    if (buf[o] & 0xc0) o += 2; else { while (buf[o] !== 0) o += 1 + buf[o]; o += 1; }
+    const type = dv.getUint16(o); const rdlen = dv.getUint16(o + 8); const rdo = o + 10;
+    if (type === 1 && rdlen === 4) return `${buf[rdo]}.${buf[rdo + 1]}.${buf[rdo + 2]}.${buf[rdo + 3]}`;
+    o = rdo + rdlen;
+  }
+  return null;
+}
+
+/* ═══ نشست SMF روی WSS ═══ */
+class SmfSession {
+  constructor(host, port, path) {
+    this.url = `wss://${host}:${port || 443}${path || SMF_PATH}`;
+    this.buf = new Uint8Array(0);
+    this.waiters = new Map();
+    this.sid = 1;
+  }
+  connect(ms) {
+    return new Promise((resolve, reject) => {
+      let settled = false;
+      const ok = (v) => { if (!settled) { settled = true; clearTimeout(this.t); resolve(v); } };
+      const bad = (e) => { if (!settled) { settled = true; clearTimeout(this.t); reject(e); } };
+      this.t = setTimeout(() => bad(new Error("timeout")), ms || 11000);
+      try { this.ws = new WebSocket(this.url); } catch (e) { return bad(e); }
+      this.ws.binaryType = "arraybuffer";
+      this.ws.onopen = () => {
+        const hs = new Uint8Array(11);
+        hs.set([0x53, 0x46, 0x4d, 0x01, 0x00]);
+        crypto.getRandomValues(hs.subarray(5));
+        this.ws.send(hs);
+        ok(this);
+      };
+      this.ws.onerror = () => bad(new Error("ws-error"));
+      this.ws.onclose = () => {
+        for (const [sid, w] of this.waiters) if (!w.closed) { w.closed = true; w.onClose && w.onClose(); }
+        bad(new Error("ws-closed"));
+      };
+      this.ws.onmessage = (ev) => this.onMsg(ev);
+    });
+  }
+  onMsg(ev) {
+    const chunk = new Uint8Array(ev.data);
+    const m = new Uint8Array(this.buf.length + chunk.length);
+    m.set(this.buf); m.set(chunk, this.buf.length); this.buf = m;
+    for (;;) {
+      if (this.buf.length < 5) break;
+      const sid = (this.buf[0] << 8) | this.buf[1], flags = this.buf[2], len = (this.buf[3] << 8) | this.buf[4];
+      if (this.buf.length < 5 + len) break;
+      const payload = this.buf.subarray(5, 5 + len);
+      this.buf = this.buf.subarray(5 + len);
+      const w = this.waiters.get(sid);
+      if (!w) continue;
+      if (flags & F_CLOSE) { w.closed = true; this.waiters.delete(sid); w.onClose && w.onClose(); }
+      else if (flags & F_DATA) w.onData && w.onData(payload);
+    }
+  }
+  send(f) { try { this.ws.send(f); } catch (e) {} }
+  /* جریان UDP:53 → یک پرس‌وجوی DNS از دل تونل */
+  dnsQuery(name, ms) {
+    return new Promise((resolve) => {
+      const sid = this.sid++;
+      const id = (Math.random() * 65535) | 0;
+      let acked = false, done = false;
+      const fin = (v) => { if (!done) { done = true; clearTimeout(t); this.waiters.delete(sid); try { this.send(smfFrame(sid, F_CLOSE, new Uint8Array([0]))); } catch (e) {} resolve(v); } };
+      const t = setTimeout(() => fin(null), ms || 9000);
+      const w = {
+        chunks: [], closed: false,
+        onData: (d) => {
+          if (done) return;
+          if (d.length === 1 && d[0] === 0 && !acked) { acked = true; this.send(smfFrame(sid, F_DATA, dnsQueryBytes(name, id))); return; }
+          if (d.length > 12) fin(dnsParseA(d, id) || true);
+        },
+        onClose: () => fin(null),
+      };
+      this.waiters.set(sid, w);
+      const p = new Uint8Array(8); // netw=2(UDP) port=53 atyp=1 ip=8.8.8.8
+      p[0] = 2; p[1] = 0; p[2] = 53; p[3] = 1; p.set([8, 8, 8, 8], 4);
+      this.send(smfFrame(sid, F_OPEN, p));
+    });
+  }
+  /* TCP + درخواست HTTP خام → همهٔ پاسخ (یا فقط probe اگر req خالی) */
+  tcpHttp(hostName, port, req, ms) {
+    return new Promise((resolve) => {
+      const sid = this.sid++;
+      let acked = false, done = false;
+      const chunks = [];
+      const fin = (v) => { if (!done) { done = true; clearTimeout(t); this.waiters.delete(sid); resolve(v); } };
+      const t = setTimeout(() => fin(chunks.length ? chunks : null), ms || 11000);
+      const w = {
+        chunks: [], closed: false,
+        onData: (d) => {
+          if (done) return;
+          if (d.length === 1 && d[0] === 0 && !acked) {
+            acked = true;
+            if (req) this.send(smfFrame(sid, F_DATA, new TextEncoder().encode(req)));
+            else { this.send(smfFrame(sid, F_CLOSE, new Uint8Array([0]))); fin(true); }
+            return;
+          }
+          chunks.push(d);
+          if (!req) fin(true);
+        },
+        onClose: () => fin(chunks.length ? chunks : null),
+      };
+      this.waiters.set(sid, w);
+      const hb = new TextEncoder().encode(hostName);
+      const p = new Uint8Array(5 + hb.length);
+      p[0] = 1; p[1] = (port >> 8) & 255; p[2] = port & 255; p[3] = 2; p[4] = hb.length;
+      p.set(hb, 5);
+      this.send(smfFrame(sid, F_OPEN, p));
+    });
+  }
+  close() { try { this.ws.close(); } catch (e) {} }
+}
+
+/* ═══ بوت‌استرپ ═══ */
+async function loadBootstrap() {
+  for (const s of BOOT_URLS) {
+    try {
+      const r = await fetchTimeout(s.url, 9000);
+      if (!r.ok) continue;
+      const j = await r.json();
+      if (j && j.entries && j.entries.length) { BOOT = j; return s.name; }
+    } catch (e) {}
+  }
+  return null;
+}
+async function renderBootSources() {
+  const box = $("bootsrc");
+  box.innerHTML = "";
+  for (const s of BOOT_URLS) {
+    const d = document.createElement("div");
+    d.className = "mini";
+    d.innerHTML = `<div class="t"><span class="led run"></span>${s.name}</div><div class="d">در حال بررسی…</div>`;
+    box.appendChild(d);
+    fetchTimeout(s.url, 9000).then(r => {
+      d.querySelector(".led").className = "led " + (r.ok ? "ok" : "bad");
+      d.querySelector(".d").textContent = r.ok ? "در دسترس" : "بی‌پاسخ (" + r.status + ")";
+    }).catch(() => {
+      d.querySelector(".led").className = "led bad";
+      d.querySelector(".d").textContent = "از این شبکه در دسترس نیست";
+    });
+  }
+}
+function renderExits() {
+  const box = $("exits");
+  box.innerHTML = "";
+  const names = { GB: "انگلیس — خروجی اصلی", US: "آمریکا — پشتیبان ۱", DE: "آلمان — پشتیبان ۲", FR: "فرانسه — پشتیبان ۳" };
+  (BOOT && BOOT.exits || []).forEach((e, i) => {
+    const d = document.createElement("div");
+    d.className = "mini";
+    d.innerHTML = `<div class="t"><span class="cc">${e.cc || "?"}</span>پرش ${i + 1}</div><div class="d">${names[e.cc] || e.host}</div>`;
+    box.appendChild(d);
+  });
+  if (!box.children.length) box.innerHTML = `<div class="mini"><div class="t"><span class="led"></span>—</div><div class="d">فهرست خروجی در بوت‌استرپ نیست</div></div>`;
+}
+
+/* ═══ رندر و تست ناوگان ═══ */
+function originBadge(h) {
+  if (/serv00\.net$/.test(h)) return `<span class="badge sv">سرور خودت</span>`;
+  if (/workers\.dev$/.test(h)) return `<span class="badge cf">کلادفلر · فالبک</span>`;
+  return `<span class="badge vp">سرور مستقل</span>`;
+}
+function renderFleet() {
+  const box = $("fleet");
+  box.innerHTML = "";
+  (BOOT.entries || []).slice().sort((a, b) => (a.prio || 99) - (b.prio || 99)).forEach((e, i) => {
+    const d = document.createElement("div");
+    d.className = "entry";
+    d.id = "ent" + i;
+    let hist = "";
+    try { const h = JSON.parse(localStorage.getItem("flc:" + e.host) || "null"); if (h) hist = ` · قبلی: <span class="${h.ok ? "st-ok" : "st-bad"}">${h.ok ? "زنده" : "مرده"} · ${relTime(h.at)}</span>`; } catch (err) {}
+    d.innerHTML = `
+      <div class="top">
+        <span class="ehost">${e.host}</span>
+        ${originBadge(e.host)}
+        <span class="badge pr">اولویت ${e.prio || "—"}</span>
+        <button class="btn sm" style="margin-inline-start:auto" onclick="fullTest(${i})">تست کامل</button>
+      </div>
+      <div class="stat"><span class="st-run">در صف تست…</span>${hist}</div>
+      <div class="extra" id="ex${i}"></div>`;
+    box.appendChild(d);
+  });
+  $("fleetPill").className = "pill wait";
+  $("fleetPill").textContent = `${BOOT.entries.length} ورودی — در حال تست…`;
+}
+function setStat(el, html) { el.querySelector(".stat span").outerHTML = `<span>${html}</span>`; }
+async function testEntry(i) {
+  const e = BOOT.entries[i];
+  const el = $("ent" + i);
+  if (!el) return;
+  setStat(el, `<span class="st-run">در حال اتصال…</span>`);
+  const t0 = performance.now();
+  const s = new SmfSession(e.host, e.port, e.path);
+  try {
+    await s.connect(11000);
+    const wsMs = Math.round(performance.now() - t0);
+    setStat(el, `<span class="st-run">WS باز شد (${wsMs}ms) — تست DNS از دل تونل…</span>`);
+    const t1 = performance.now();
+    const ans = await s.dnsQuery("cloudflare.com", 9000);
+    const dnsMs = Math.round(performance.now() - t1);
+    s.close();
+    if (ans) {
+      setStat(el, `<span class="st-ok">زنده</span> · اتصال <span class="ms">${wsMs}ms</span> · DNS از دل تونل <span class="st-ok">جواب داد</span> <span class="ms">(${dnsMs}ms)</span>`);
+      localStorage.setItem("flc:" + e.host, JSON.stringify({ ok: true, at: Date.now() }));
+    } else {
+      setStat(el, `<span class="st-bad">WS باز شد اما داده برنگشت — رله نیمه‌مرده</span>`);
+      localStorage.setItem("flc:" + e.host, JSON.stringify({ ok: false, at: Date.now() }));
+    }
+  } catch (err) {
+    s.close();
+    setStat(el, `<span class="st-bad">باز نشد — از این شبکه در دسترس نیست</span>`);
+    localStorage.setItem("flc:" + e.host, JSON.stringify({ ok: false, at: Date.now() }));
+  }
+  fleetSummary();
+}
+function fleetSummary() {
+  const alive = [...document.querySelectorAll("#fleet .entry .stat .st-ok")].filter(x => x.textContent === "زنده").length;
+  const total = BOOT.entries.length;
+  const p = $("fleetPill");
+  if (alive === total) { p.className = "pill ok"; p.textContent = `${alive} از ${total} ورودی زنده — عالی`; }
+  else if (alive > 0) { p.className = "pill ok"; p.textContent = `${alive} از ${total} ورودی زنده`; }
+  else { p.className = "pill bad"; p.textContent = "هیچ ورودی از این شبکه پاسخ نداد"; }
+}
+async function testAll() {
+  if (!BOOT) return;
+  for (let i = 0; i < BOOT.entries.length; i++) { await testEntry(i); await new Promise(r => setTimeout(r, 700)); }
+}
+async function fullTest(i) {
+  const e = BOOT.entries[i];
+  const ex = $("ex" + i);
+  const btn = $("ent" + i).querySelector("button");
+  if (!ex || btn.disabled) return;
+  btn.disabled = true; btn.textContent = "…";
+  ex.className = "extra show";
+  ex.innerHTML = `<span class="st-run">تست کامل در جریان… (خروجی مستقیم + پرش‌های نردبان)</span>`;
+  const s = new SmfSession(e.host, e.port, e.path);
+  try {
+    await s.connect(11000);
+    const chunks = await s.tcpHttp("checkip.amazonaws.com", 80,
+      "GET / HTTP/1.1\r\nHost: checkip.amazonaws.com\r\nUser-Agent: flashcloud\r\nAccept: */*\r\nConnection: close\r\n\r\n", 12000);
+    let ip = null;
+    if (Array.isArray(chunks)) {
+      let n = 0; for (const a of chunks) n += a.length;
+      const u = new Uint8Array(n); let o = 0; for (const a of chunks) { u.set(a, o); o += a.length; }
+      const m = new TextDecoder().decode(u).match(/(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/);
+      if (m) ip = m[1];
+    }
+    const hops = [];
+    for (const x of (BOOT.exits || [])) {
+      const okk = await s.tcpHttp(x.host, x.port || 443, null, 8000);
+      hops.push(`<span class="kv">${x.cc}: ${okk ? '<span class="st-ok">در دسترس</span>' : '<span class="st-bad">بی‌پاسخ</span>'}</span>`);
+    }
+    s.close();
+    ex.innerHTML = `<div class="kv">IP خروجی مستقیم رله: <b>${ip || "نامشخص"}</b></div>
+      <div style="margin-top:5px">${hops.join("")}</div>
+      <div style="color:var(--dim2);font-size:11px;margin-top:5px">خروجی اصلی (سایت‌های کلادفلری) از پرش GB خارج می‌شود — همان مسیری که اپ فلش می‌رود.</div>`;
+  } catch (err) {
+    s.close();
+    ex.innerHTML = `<span class="st-bad">نشست برقرار نشد</span>`;
+  }
+  btn.disabled = false; btn.textContent = "تست کامل";
+}
+
+/* ═══ فرم رلهٔ نو ═══ */
+async function testNew() {
+  const raw = $("newUrl").value.trim().replace(/^https?:\/\//, "").replace(/\/+$/, "");
+  const box = $("newResult");
+  if (!/^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}$/i.test(raw)) {
+    box.className = "result bad show"; box.innerHTML = "نشانی درست نیست — مثل: <b>username.serv00.net</b>";
+    return;
+  }
+  box.className = "result show";
+  box.innerHTML = `<span class="st-run">در حال تست ${raw} …</span>`;
+  let health = false;
+  try { const r = await fetchTimeout("https://" + raw + "/health", 9000); health = r.ok && (await r.text()).includes("FLR-3"); } catch (e) {}
+  const s = new SmfSession(raw, 443, SMF_PATH);
+  let wsOk = false, dnsOk = false, wsMs = 0;
+  try {
+    const t0 = performance.now();
+    await s.connect(11000); wsOk = true; wsMs = Math.round(performance.now() - t0);
+    dnsOk = !!(await s.dnsQuery("cloudflare.com", 9000));
+    s.close();
+  } catch (e) { s.close(); }
+  if (wsOk && dnsOk) {
+    const msg = `ورودی نو آماده است — serv00: ${raw} — تست زنده از مرورگر: WS ${wsMs}ms + DNS از دل تونل جواب داد${health ? " + سلامت HTTP ok" : ""} — لطفاً با prio=1 در bootstrap.json ثبت کن.`;
+    const enc = encodeURIComponent(msg);
+    box.className = "result ok show";
+    box.innerHTML = `<b style="color:var(--green)">سرور شما زنده است و از شبکهٔ خودت کامل تست شد</b>
+      <div style="font-size:12px;color:var(--dim);margin-top:2px">اتصال <span class="ms">${wsMs}ms</span> · DNS از دل تونل پاسخ داد · ${health ? "سلامت HTTP ok" : "سلامت HTTP بی‌پاسخ (مهم نیست — دیتاپلین سالم است)"}</div>
+      <div class="msgbox">${msg}</div>
+      <div class="row">
+        <a class="btn green" target="_blank" href="https://t.me/Mohamadaghilibot?text=${enc}">فرستادن به ربات فلش</a>
+        <a class="btn" target="_blank" href="https://t.me/Flash_deployerbot?text=${enc}">فرستادن به ربات آذرخش</a>
+        <button class="btn" onclick="copyTxt(this.dataset.m,this)" data-m="${msg.replace(/"/g, "&quot;")}">کپی پیام</button>
+      </div>`;
+  } else {
+    box.className = "result bad show";
+    box.innerHTML = `<b style="color:var(--red)">هنوز آماده نیست</b>
+      <div style="font-size:12.5px;color:var(--dim);margin-top:4px">
+      ${!wsOk ? "اتصال WSS باز نشد — گام ۴ (گواهی TLS) و گام ۵ (نصب و ری‌استارت) را دوباره ببین." : "اتصال باز شد اما داده برنگشت — اسکریپت نصب را دوباره اجرا کن تا ری‌استارت تازه شود."}
+      <br>اگر درست نشد، نشانی سرور + یوزرنیم + پسورد را برایم بفرست تا خودم از طریق SSH نصب و تست کنم.</div>`;
+  }
+}
+
+/* ═══ شروع ═══ */
+(async function init() {
+  renderBootSources();
+  const src = await loadBootstrap();
+  if (!BOOT) {
+    $("fleetPill").className = "pill bad";
+    $("fleetPill").textContent = "هیچ منبع بوت‌استرپ در دسترس نبود";
+    $("fleet").innerHTML = `<div class="entry"><div class="stat">بوت‌استرپ از هیچ‌یک از منابع (jsdelivr · raw.githubusercontent · github-pages) گرفته نشد — یا اینترنت قطع است یا همهٔ منابع فیلترند.</div></div>`;
+    return;
+  }
+  $("bootSrc").textContent = "منبع فعال: " + src;
+  renderExits();
+  renderFleet();
+  testAll();
+})();
+</script>
+</body>
+</html>
