@@ -1,0 +1,15 @@
+{
+  "v": 1,
+  "at": 1792572000000,
+  "note": "FLR-3 entry grid (P870) — ورودی serv00 وقتی مستقر شود با prio=1 اینجا می‌نشیند؛ ورکرهای CF فالبک پایین می‌مانند",
+  "entries": [
+    {"host": "flr2d-869.nasabaghili.workers.dev", "port": 443, "path": "/s2-c7a4df682646", "vpath": "/f1-4b872aecdf", "ips": ["104.21.66.27", "172.67.199.128", "104.17.147.22", "162.159.140.229", "188.114.97.7", "190.93.246.10"], "prio": 10},
+    {"host": "flr2e-869.nasabaghili.workers.dev", "port": 443, "path": "/s2-c7a4df682646", "vpath": "/f1-4b872aecdf", "prio": 11}
+  ],
+  "exits": [
+    {"host": "proxyip.gb.cmliussss.net", "port": 443, "cc": "GB", "prio": 1},
+    {"host": "proxyip.us.cmliussss.net", "port": 443, "cc": "US", "prio": 2},
+    {"host": "proxyip.de.cmliussss.net", "port": 443, "cc": "DE", "prio": 3},
+    {"host": "proxyip.fr.cmliussss.net", "port": 443, "cc": "FR", "prio": 4}
+  ]
+}
